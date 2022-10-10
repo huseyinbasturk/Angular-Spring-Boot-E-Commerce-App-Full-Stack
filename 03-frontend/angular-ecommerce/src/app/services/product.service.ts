@@ -1,3 +1,4 @@
+import { keyframes } from '@angular/animations';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
@@ -19,9 +20,7 @@ export class ProductService {
     //need to build url based on category id 
     const searchUrl = `${this.baseUrl}/search/findByCategoryId?id=${theCategoryId}`;
 
-    return this.httpClient.get<GetResponseProducts>(searchUrl).pipe(
-      map(response => response._embedded.products)
-    )
+    return this.getProducts(searchUrl);
   }
   
 getProductCategories(): Observable<ProductCategory[]> {
@@ -30,7 +29,22 @@ getProductCategories(): Observable<ProductCategory[]> {
     map(response => response._embedded.productCategory)
   );
 }
+
+searchProducts(keyword: string): Observable<Product[]> {
+
+  //need to build url based on the keyword 
+  const searchUrl = `${this.baseUrl}/search/findByNameContaining?id=${keyword}`;
+
+  return this.getProducts(searchUrl);
 }
+
+private getProducts(searchUrl: string): Observable<Product[]> {
+  return this.httpClient.get<GetResponseProducts>(searchUrl).pipe(
+    map(response => response._embedded.products)
+  );
+}
+}
+
 
 interface GetResponseProducts {
   _embedded: {
