@@ -29,7 +29,12 @@ const routes: Routes = [
     SearchComponent,
     ProductDetailsComponent,
   ],
-  imports: [RouterModule.forRoot(routes), BrowserModule, HttpClientModule, NgbModule],
+  imports: [
+    RouterModule.forRoot(routes), 
+    BrowserModule, 
+    HttpClientModule, 
+    NgbModule
+  ],
   providers: [ProductService],
   bootstrap: [AppComponent],
 })
