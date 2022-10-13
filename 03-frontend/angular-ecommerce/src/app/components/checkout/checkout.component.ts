@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Country } from 'src/app/common/country';
 import { State } from 'src/app/common/state';
+import { CartService } from 'src/app/services/cart.service';
 import { HbShopFormService } from 'src/app/services/hb-shop-form.service';
 import { HbValidators } from 'src/app/validators/hb-validators';
 
@@ -26,7 +27,8 @@ export class CheckoutComponent implements OnInit {
   billingAddressStates: State[] = [];
 
   constructor(private formBuilder: FormBuilder,
-              private hbShopFormService: HbShopFormService) { }
+              private hbShopFormService: HbShopFormService,
+              private cartService: CartService) { }
 
   ngOnInit(): void {
     this.checkoutFormGroup = this.formBuilder.group({
@@ -95,10 +97,12 @@ export class CheckoutComponent implements OnInit {
         console.log("Retrieved credit card months: " + JSON.stringify(data))
         this.countries = data;
       }
-    )
+    );
+    this.reviewCartDetails();
 
   }
 
+  
   handleMonthsAndYears(){
     const creditCardFormGroup = this.checkoutFormGroup.get('creditCard');
 
@@ -199,4 +203,18 @@ export class CheckoutComponent implements OnInit {
   get creditCardNameOnCard() { return this.checkoutFormGroup.get('creditCard.nameOnCard'); }
   get creditCardNumber() { return this.checkoutFormGroup.get('creditCard.cardNumber'); }
   get creditCardSecurityCode() { return this.checkoutFormGroup.get('creditCard.securityCode'); }
+
+  reviewCartDetails() {
+    
+    //subscribe to cartService.totalQuantity
+    this.cartService.totalQuantity.subscribe(
+      data => this.totalQuantity = data
+    );
+
+    //subscribe to cartService.totalPrice
+    this.cartService.totalPrice.subscribe(
+      data => this.totalPrice = data
+    );
+  }
+
 }
