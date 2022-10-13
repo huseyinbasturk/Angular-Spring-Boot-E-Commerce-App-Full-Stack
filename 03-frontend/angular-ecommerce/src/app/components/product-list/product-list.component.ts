@@ -40,8 +40,9 @@ export class ProductListComponent implements OnInit {
 
     if(this.searchMode){
       this.handleSearchProducts();
-    }
+    } else {
     this.handleListProducts();
+    }
   }
 
   handleSearchProducts() {
@@ -114,7 +115,7 @@ export class ProductListComponent implements OnInit {
       return(data: any) => {
         this.products = data._embedded.products;
         this.thePageNumber = data.page.number +1;
-        this.thePageSize = data.page.site;
+        this.thePageSize = data.page.size;
         this.theTotalElements = data.page.totalElements
 
       }
