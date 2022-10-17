@@ -2,6 +2,7 @@ import { keyframes } from '@angular/animations';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { Product } from '../common/product';
 import { ProductCategory } from '../common/product-category';
 
@@ -10,9 +11,9 @@ import { ProductCategory } from '../common/product-category';
 })
 export class ProductService {
  
+  private baseUrl = environment.hbShopApiUrl +'/products';
 
-  private baseUrl = 'http://localhost:8080/api/products';
-  private categoryUrl = 'http://localhost:8080/api/product-category';
+  private categoryUrl = environment.hbShopApiUrl + '/product-category';
 
   constructor(private httpClient: HttpClient) { }
 
@@ -39,6 +40,8 @@ export class ProductService {
 
     //need to build url based on category id 
     const searchUrl = `${this.baseUrl}/search/findByCategoryId?id=${theCategoryId}`;
+
+    console.log(`Getting products from - ${searchUrl}`);
 
     return this.getProducts(searchUrl);
   }
